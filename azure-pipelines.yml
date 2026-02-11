@@ -1,0 +1,29 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+
+steps:
+
+- script: pip install -r requirements.txt
+  displayName: 'Install required project libraries'
+
+- script: pip install pytest
+  displayName: 'Install unit test library'
+
+- script: pytest app/tests.py
+  displayName: 'Run unit tests'
+
+- script: | 
+    pip install snowflake-cli-labs
+    snow --version
+  displayName: 'Install snowpark client'
+
+- script: | 
+    snow snowpark build
+    snow snowpark deploy --replace -x --account $(snowflake.account) --user $(snowflake.user) --password $(snowflake.password)
+    snow snowpark execute function "hello_function('Fred')" -x --account $(snowflake.account) --user $(snowflake.user) --password $(snowflake.password)
+    snow snowpark execute procedure "hello_procedure('Fred')" -x --account $(snowflake.account) --user $(snowflake.user) --password $(snowflake.password)
+  displayName: 'Deploy function(s) to Snowflake and execute there'
