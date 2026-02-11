@@ -1,0 +1,21 @@
+definition_version: 1
+snowpark:
+  project_name: "snowflake_local_dev_POC"
+  stage_name: "dev_deployment_stg"
+  src: "app/"
+
+  functions:
+    - name: hello_function
+      handler: "functions.hello_function"
+      signature:
+        - name: "name"
+          type: "string"
+      returns: string
+
+  procedures:
+    - name: hello_procedure
+      handler: "procedures.hello_procedure"
+      signature:
+        - name: "name"
+          type: "string"
+      returns: string

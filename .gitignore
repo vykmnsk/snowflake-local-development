@@ -4,3 +4,5 @@ __pycache__/
 .venv/
 .snowflake/
 .tmp/
+app.zip
+requirements.snowflake.txt
